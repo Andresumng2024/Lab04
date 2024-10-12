@@ -69,3 +69,42 @@ public class TurnoEPS extends JFrame {
                 campoEdad.setText("");
             }
         });
+         botonExtenderTiempo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (pacienteActual != null) {
+                    tiempoRestante += 5; // Extiende el tiempo en 5 segundos
+                } else {
+                    JOptionPane.showMessageDialog(null, "No hay turno en curso.");
+                }
+            }
+        });
+
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(750, 400);
+        setLocationRelativeTo(null);
+        setVisible(true);
+    }
+
+    private void agregarPaciente(Paciente paciente) {
+        // Se usa una lista temporal para manejar la prioridad y el orden de llegada
+        LinkedList<Paciente> listaTemporal = new LinkedList<>();
+        boolean prioridadAgregada = false;
+
+        // Agregar pacientes existentes en la cola a la lista temporal
+        while (!colaPacientes.isEmpty()) {
+            listaTemporal.add(colaPacientes.poll());
+        }
+
+        // Verificar si el nuevo paciente tiene prioridad
+        if (tienePrioridad(paciente)) {
+            // Se inserta en la lista temporal en el primer lugar que haya pacientes sin prioridad
+            for (int i = 0; i < listaTemporal.size(); i++) {
+                if (!tienePrioridad(listaTemporal.get(i))) {
+                    listaTemporal.add(i, paciente);
+                    prioridadAgregada = true;
+                    break;
+                }
+            }
+        }
+        
