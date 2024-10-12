@@ -157,3 +157,63 @@ public class ParqueaderoApp extends JFrame {
         });
     }
 }
+
+
+private void visualizarVehiculos4Ruedas() {
+    DateTimeFormatter formatoHora = DateTimeFormatter.ofPattern("HH:mm:ss"); // Formato sin fracciones
+    modeloTabla.setRowCount(0);
+    for (RegistroVehiculo vehiculo : vehiculos4Ruedas) {
+        long minutos = calcularTiempoEnParqueadero(vehiculo.getHoraIngreso());
+        int tarifa = calcularTarifa(vehiculo.getTipoVehiculo(), minutos);
+        modeloTabla.addRow(new Object[]{
+                vehiculo.getNumeroVehiculo(),
+                vehiculo.getPlaca(),
+                vehiculo.getTipoVehiculo(),
+                vehiculo.getHoraIngreso().format(formatoHora), // Formateo de la hora
+                tarifa
+        });
+    }
+}
+
+
+    private void mostrarCantidadYTotal() {
+        int cantidad = listaVehiculos.size();
+        int total = listaVehiculos.stream().mapToInt(v -> calcularTarifa(v.getTipoVehiculo(), calcularTiempoEnParqueadero(v.getHoraIngreso()))).sum();
+        JOptionPane.showMessageDialog(this, "Cantidad de vehículos: " + cantidad + "\nTotal a pagar: " + total + " COP");
+    }
+
+    private void eliminarVehiculo() {
+        int filaSeleccionada = tablaVehiculos.getSelectedRow();
+        if (filaSeleccionada >= 0) {
+            int numeroVehiculo = (int) modeloTabla.getValueAt(filaSeleccionada, 0);
+            listaVehiculos.removeIf(v -> v.getNumeroVehiculo() == numeroVehiculo);
+            vehiculos2Ruedas.removeIf(v -> v.getNumeroVehiculo() == numeroVehiculo);
+            vehiculos4Ruedas.removeIf(v -> v.getNumeroVehiculo() == numeroVehiculo);
+            actualizarTabla();
+        } else {
+            JOptionPane.showMessageDialog(this, "Seleccione un vehículo para eliminar.");
+        }
+    }
+
+    private long calcularTiempoEnParqueadero(LocalTime horaIngreso) {
+        return Duration.between(horaIngreso, LocalTime.now()).toMinutes();
+    }
+
+    private int calcularTarifa(String tipo, long minutos) {
+        switch (tipo) {
+            case "Bicicleta":
+            case "Ciclomotor":
+                return (int) minutos * 20;
+            case "Motocicleta":
+                return (int) minutos * 30;
+            case "Carro":
+                return (int) minutos * 60;
+            default:
+                return 0;
+        }
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new ParqueaderoApp().setVisible(true));
+    }
+}
