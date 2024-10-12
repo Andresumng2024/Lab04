@@ -103,4 +103,22 @@ public class ParqueaderoApp extends JFrame {
         add(panelIngreso, BorderLayout.NORTH);
         add(scrollTabla, BorderLayout.CENTER);
         add(panelBotones, BorderLayout.SOUTH);
+    }    
+
+    private void ingresarVehiculo() {
+        String placa = txtPlaca.getText();
+        String tipo = (String) comboTipo.getSelectedItem();
+        LocalTime horaIngreso = LocalTime.now();
+
+        contadorVehiculos++;
+        RegistroVehiculo nuevoVehiculo = new RegistroVehiculo(contadorVehiculos, placa, tipo, horaIngreso);
+        listaVehiculos.add(nuevoVehiculo);
+
+        if (tipo.equals("Bicicleta") || tipo.equals("Ciclomotor") || tipo.equals("Motocicleta")) {
+            vehiculos2Ruedas.push(nuevoVehiculo);
+        } else if (tipo.equals("Carro")) {
+            vehiculos4Ruedas.push(nuevoVehiculo);
+        }
+
+        actualizarTabla();
     }
