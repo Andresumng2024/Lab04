@@ -135,3 +135,41 @@ public class TurnoEPS extends JFrame {
             etiquetaTurnoActual.setText("Turno actual: Ninguno");
             return;
         }
+        
+        pacienteActual = colaPacientes.poll();
+        numeroTurnoActual = pacienteActual.getNumeroTurno();
+        etiquetaTurnoActual.setText("Turno actual: " + numeroTurnoActual + " - " + pacienteActual.getNombre());
+        areaTurnos.append("Llamando a: Turno " + numeroTurnoActual + " - " + pacienteActual.getNombre() + "\n");
+        actualizarColaPacientes();
+
+        tiempoRestante = 5;
+
+        // Crear un temporizador
+        temporizador = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tiempoRestante--;
+                if (tiempoRestante <= 0) {
+                    temporizador.stop();
+                    areaTurnos.append(pacienteActual.getNombre() + " ha sido atendido.\n");
+                    pacienteActual = null;
+                    iniciarTurno();
+                } else {
+                    etiquetaTurnoActual.setText("Turno actual: " + numeroTurnoActual + " - " + pacienteActual.getNombre() + " | Tiempo restante: " + tiempoRestante + "s");
+                }
+            }
+        });
+        temporizador.start();
+    }
+
+    private void actualizarColaPacientes() {
+        areaColaPacientes.setText("");
+        for (Paciente p : colaPacientes) {
+            areaColaPacientes.append("Turno " + p.getNumeroTurno() + " - " + p.getNombre() + "\n");
+        }
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(TurnoEPS::new);
+    }
+}
