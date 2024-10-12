@@ -40,3 +40,29 @@ public class ParqueaderoApp extends JFrame {
         });
         timerActualizacion.start();
     }
+     private void configurarVentana() {
+        setTitle("Administración de Parqueadero");
+        setSize(700, 500);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setLayout(new BorderLayout());
+    }
+
+    private void inicializarComponentes() {
+        JPanel panelIngreso = new JPanel();
+        panelIngreso.setLayout(new GridLayout(3, 2, 10, 10));
+
+        panelIngreso.add(new JLabel("Placa:"));
+        txtPlaca = new JTextField();
+        panelIngreso.add(txtPlaca);
+
+        panelIngreso.add(new JLabel("Tipo de Vehículo:"));
+        comboTipo = new JComboBox<>(new String[]{"Bicicleta", "Ciclomotor", "Motocicleta", "Carro"});
+        panelIngreso.add(comboTipo);
+
+        JButton btnIngresar = new JButton("Ingresar Vehículo");
+        btnIngresar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                ingresarVehiculo();
+            }
+        });
