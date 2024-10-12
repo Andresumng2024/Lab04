@@ -122,3 +122,38 @@ public class ParqueaderoApp extends JFrame {
 
         actualizarTabla();
     }
+  private void actualizarTabla() {
+    DateTimeFormatter formatoHora = DateTimeFormatter.ofPattern("HH:mm:ss"); // Formato sin fracciones
+    modeloTabla.setRowCount(0);
+    for (RegistroVehiculo vehiculo : listaVehiculos) {
+        long minutos = calcularTiempoEnParqueadero(vehiculo.getHoraIngreso());
+        int tarifa = calcularTarifa(vehiculo.getTipoVehiculo(), minutos);
+        modeloTabla.addRow(new Object[]{
+                vehiculo.getNumeroVehiculo(),
+                vehiculo.getPlaca(),
+                vehiculo.getTipoVehiculo(),
+                vehiculo.getHoraIngreso().format(formatoHora), // Formateo de la hora
+                tarifa
+        });
+    }
+}
+  
+    private void visualizarTablaCompleta() {
+        actualizarTabla();
+    }
+
+  private void visualizarVehiculos2Ruedas() {
+    DateTimeFormatter formatoHora = DateTimeFormatter.ofPattern("HH:mm:ss"); // Formato sin fracciones
+    modeloTabla.setRowCount(0);
+    for (RegistroVehiculo vehiculo : vehiculos2Ruedas) {
+        long minutos = calcularTiempoEnParqueadero(vehiculo.getHoraIngreso());
+        int tarifa = calcularTarifa(vehiculo.getTipoVehiculo(), minutos);
+        modeloTabla.addRow(new Object[]{
+                vehiculo.getNumeroVehiculo(),
+                vehiculo.getPlaca(),
+                vehiculo.getTipoVehiculo(),
+                vehiculo.getHoraIngreso().format(formatoHora), // Formateo de la hora
+                tarifa
+        });
+    }
+}
