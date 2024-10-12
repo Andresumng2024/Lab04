@@ -108,3 +108,30 @@ public class TurnoEPS extends JFrame {
             }
         }
         
+   // Si no se ha agregado, significa que el paciente puede ir al final
+        if (!prioridadAgregada) {
+            listaTemporal.add(paciente);
+        }
+
+        // Reinserta los pacientes en la cola original en el mismo orden
+        colaPacientes.addAll(listaTemporal);
+
+        actualizarColaPacientes();
+        if (pacienteActual == null) {
+            iniciarTurno();
+        }
+    }
+
+    private boolean tienePrioridad(Paciente paciente) {
+        return paciente.getEdad() >= 60 || paciente.getEdad() < 12 ||
+               "PC".equals(paciente.getAfiliacion()) ||
+               "Embarazo".equals(paciente.getCondicion()) ||
+               "Limitación motriz".equals(paciente.getCondicion());
+    }
+
+    private void iniciarTurno() {
+        if (colaPacientes.isEmpty()) {
+            pacienteActual = null;
+            etiquetaTurnoActual.setText("Turno actual: Ninguno");
+            return;
+        }
