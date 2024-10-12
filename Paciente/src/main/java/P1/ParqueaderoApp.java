@@ -66,3 +66,41 @@ public class ParqueaderoApp extends JFrame {
                 ingresarVehiculo();
             }
         });
+          panelIngreso.add(btnIngresar);
+
+        JPanel panelBotones = new JPanel(new GridLayout(3, 2, 10, 10));
+        JButton btnVisualizarTabla = new JButton("Visualizar Tabla");
+        JButton btnVisualizar2Ruedas = new JButton("Visualizar 2 Ruedas");
+        JButton btnVisualizar4Ruedas = new JButton("Visualizar 4 Ruedas");
+        JButton btnCantidadTotal = new JButton("Cantidad y Total a Pagar");
+        JButton btnEliminarVehiculo = new JButton("Eliminar Vehículo");
+        JButton btnSalir = new JButton("Salir");
+
+        btnVisualizarTabla.addActionListener(e -> visualizarTablaCompleta());
+        btnVisualizar2Ruedas.addActionListener(e -> visualizarVehiculos2Ruedas());
+        btnVisualizar4Ruedas.addActionListener(e -> visualizarVehiculos4Ruedas());
+        btnCantidadTotal.addActionListener(e -> mostrarCantidadYTotal());
+        btnEliminarVehiculo.addActionListener(e -> eliminarVehiculo());
+        btnSalir.addActionListener(e -> System.exit(0));
+
+        panelBotones.add(btnVisualizarTabla);
+        panelBotones.add(btnVisualizar2Ruedas);
+        panelBotones.add(btnVisualizar4Ruedas);
+        panelBotones.add(btnCantidadTotal);
+        panelBotones.add(btnEliminarVehiculo);
+        panelBotones.add(btnSalir);
+
+        modeloTabla = new DefaultTableModel();
+        modeloTabla.addColumn("Número");
+        modeloTabla.addColumn("Placa");
+        modeloTabla.addColumn("Tipo");
+        modeloTabla.addColumn("Hora Ingreso");
+        modeloTabla.addColumn("Valor a Pagar");
+
+        tablaVehiculos = new JTable(modeloTabla);
+        JScrollPane scrollTabla = new JScrollPane(tablaVehiculos);
+
+        add(panelIngreso, BorderLayout.NORTH);
+        add(scrollTabla, BorderLayout.CENTER);
+        add(panelBotones, BorderLayout.SOUTH);
+    }
